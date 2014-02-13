@@ -38,8 +38,8 @@ def setup(rate=0.0,vocab='ACTGN'):
 
     # Randomly mutate positions.
     seq = list(seq)
-    for i in random.sample(set(xrange(len(seq))),int(rate*len(seq))):
-      seq[i] = random.sample(set(vocab)-set(seq[i]),1)[0]
+    for i,rand in enumerate([random.random() for i in xrange(len(seq))]):
+      if rand < rate: seq[i] = random.sample(set(vocab)-set(seq[i]),1)[0]
 
     # Return the mutated sequence.
     return ''.join(seq)
