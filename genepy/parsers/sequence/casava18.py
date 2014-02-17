@@ -1,10 +1,10 @@
 import re
 
 # Line regular expressions.
-line_res = list()
+regexes = list()
 
 # Generate the regex for line 0.
-line_res.append(
+regexes.append(
   re.compile(r'^@{regex1} {regex2}$'.format(
     regex1=r':'.join([
       r'(?P<name>[^:]+)',         # Machine name.
@@ -23,18 +23,18 @@ line_res.append(
     ]),
     )
   )
-) # line_res.append regex line 0
+) # regexes.append regex line 0
 
 # Generate the regex for line 1.
-line_res.append(
+regexes.append(
   re.compile(r'^{regex}$'.format(
     regex=r'(?P<seq>\w+)',  # Sequence.
     )
   )
-) # line_res.append regex line 1
+) # regexes.append regex line 1
 
 # Generate the regex for line 2.
-line_res.append(
+regexes.append(
   re.compile(r'^\+(?:{regex1} {regex2})?$'.format(
     regex1=r':'.join([
       r'(?P<name>[^:]+)',         # Machine name.
@@ -53,15 +53,15 @@ line_res.append(
     ]),
     )
   )
-) # line_res.append regex line 2
+) # regexes.append regex line 2
 
 # Generate the regex for line 3.
-line_res.append(
+regexes.append(
   re.compile(r'^{regex}$'.format(
     regex=r'(?P<qual>.+)',  # Qualities.
     )
   )
-) # line_res.append regex line 3
+) # regexes.append regex line 3
 
 def parse(ifs):
   '''
@@ -77,7 +77,7 @@ def parse(ifs):
   for i,line in enumerate(ifs):
 
     # Sanity check line format.
-    match = line_res[i%len(line_res)].match(line)
+    match = regexes[i%len(regexes)].match(line)
     if not match: raise ValueError('line %d malformed' % i)
 
     # Yield the matched fields.

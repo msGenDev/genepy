@@ -1,14 +1,21 @@
 import re
 
-# Generate the regular expression for this file type.
-fields = [
-  r'(?P<grp>[^\t]+)',             # Group field.
-  r'(?P<cov>\d+)',                # Coverage field.
-  r'(?P<cnt>\d+)',                # Count field.
-  r'(?P<tot>\d+)',                # Total field.
-  r'(?P<pct>\d\.\d+(?:e[\+-]\d+)?)', # Percentage field.
-]
-line_re = re.compile('^{regex}$'.format(regex=r'\t'.join(fields)))
+# Line regular expressions.
+regexes = list()
+
+# Generate the regex for line 0
+regexes.append(
+  re.compile('^{regex}$'.format(
+    regex=r'\t'.join([
+      r'(?P<grp>[^\t]+)',                 # Group field.
+      r'(?P<cov>\d+)',                    # Coverage field.
+      r'(?P<cnt>\d+)',                    # Count field.
+      r'(?P<tot>\d+)',                    # Total field.
+      r'(?P<pct>\d\.\d+(?:e[\+-]\d+)?)',  # Percentage field.
+    ]),
+    )
+  )
+) # regexes.append regex line 0
 
 def parse(ifs,**kwargs):
   '''
@@ -32,7 +39,7 @@ def parse(ifs,**kwargs):
   for i,line in enumerate(ifs):
 
     # Sanity check line format.
-    match = line_re.match(line)
+    match = regexes[i%len(regexes)].match(line)
     if not match: raise ValueError('line %d malformed' % i)
 
     # Yield the matched fields.
