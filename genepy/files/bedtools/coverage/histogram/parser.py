@@ -43,4 +43,4 @@ def parse(ifs,**kwargs):
     if not match: raise ValueError('line %d malformed' % i)
 
     # Yield the matched fields.
-    yield match.groupdict()
+    yield match.groupdict({'default':match.group(0)})
